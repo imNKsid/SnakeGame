@@ -13,13 +13,17 @@ import Header from "./Header";
 const { height, width } = Dimensions.get("window");
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
-const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
+const FOOD_INITIAL_POSITION = {
+  x: Math.floor(Math.random() * width * 0.09),
+  y: 20,
+};
 const GAME_BOUNDS = {
   xMin: 0,
   xMax: width * 0.09,
   yMin: 0,
   yMax: height * 0.077,
 }; //defining the game boundaries
+
 const MOVE_INTERVAL = 70; //constant value for controlling the Snake's speed
 const SCORE_INCREMENT = 10;
 
@@ -134,7 +138,16 @@ const Game = () => {
           pauseGame={pauseGame}
           reloadGame={reloadGame}
         >
-          <Text style={styles.scoreStyle}>{score}</Text>
+          {/* <View style={styles.scoreContainer}> */}
+          <Text
+            style={[
+              styles.scoreStyle,
+              { fontSize: score.toString().length > 5 ? 18 : 22 },
+            ]}
+          >
+            {score}
+          </Text>
+          {/* </View> */}
         </Header>
         <View style={styles.boundaries}>
           <Snake snake={snake} />
@@ -168,6 +181,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderColor: Colors.primary,
+  },
+  scoreContainer: {
+    position: "absolute",
+    bottom: 18,
+    right: 10,
   },
   scoreStyle: {
     fontSize: 22,
