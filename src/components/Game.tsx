@@ -10,12 +10,17 @@ import { checkEatsFood } from "../utils/checkEatsFood";
 import { randomFoodPosition } from "../utils/randomFoodPosition";
 import Header from "./Header";
 
-const { width } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
 const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
-const GAME_BOUNDS = { xMin: 0, xMax: 35, yMin: 0, yMax: width * 0.165 }; //defining the game boundaries
-const MOVE_INTERVAL = 50; //constant value for controlling the Snake's speed
+const GAME_BOUNDS = {
+  xMin: 0,
+  xMax: width * 0.09,
+  yMin: 0,
+  yMax: height * 0.077,
+}; //defining the game boundaries
+const MOVE_INTERVAL = 70; //constant value for controlling the Snake's speed
 const SCORE_INCREMENT = 10;
 
 const Game = () => {
