@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import { Direction } from "../types/types";
@@ -8,10 +8,13 @@ import Food from "./Food";
 import { Colors } from "../styles/colors";
 import { checkEatsFood } from "../utils/checkEatsFood";
 import { randomFoodPosition } from "../utils/randomFoodPosition";
+import Header from "./Header";
+
+const { height, width } = Dimensions.get("window");
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
 const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
-const GAME_BOUNDS = { xMin: 0, xMax: 35, yMin: 0, yMax: 72 };
+const GAME_BOUNDS = { xMin: 0, xMax: 35, yMin: 0, yMax: width * 0.165 };
 const MOVE_INTERVAL = 50;
 const SCORE_INCREMENT = 10;
 
@@ -22,28 +25,6 @@ const Game = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [score, setScore] = useState(0);
-
-  const handleGesture = (event: any) => {
-    const { translationX, translationY } = event.nativeEvent;
-
-    if (Math.abs(translationX) > Math.abs(translationY)) {
-      if (translationX > 0) {
-        // Moving right
-        setDirection(Direction.Right);
-      } else {
-        // Moving left
-        setDirection(Direction.Left);
-      }
-    } else {
-      if (translationY > 0) {
-        // Moving down
-        setDirection(Direction.Down);
-      } else {
-        // Moving up
-        setDirection(Direction.Up);
-      }
-    }
-  };
 
   useEffect(() => {
     if (!isGameOver) {
@@ -93,13 +74,59 @@ const Game = () => {
     }
   };
 
+  const handleGesture = (event: any) => {
+    const { translationX, translationY } = event.nativeEvent;
+
+    if (Math.abs(translationX) > Math.abs(translationY)) {
+      if (translationX > 0) {
+        // Moving right
+        setDirection(Direction.Right);
+      } else {
+        // Moving left
+        setDirection(Direction.Left);
+      }
+    } else {
+      if (translationY > 0) {
+        // Moving down
+        setDirection(Direction.Down);
+      } else {
+        // Moving up
+        setDirection(Direction.Up);
+      }
+    }
+  };
+
+  const pauseGame = () => {
+    setIsPaused(!isPaused);
+  };
+
+  const reloadGame = () => {
+    setSnake(SNAKE_INITIAL_POSITION);
+    setFood(FOOD_INITIAL_POSITION);
+    setIsGameOver(false);
+    setScore(0);
+    setDirection(Direction.Right);
+    setIsPaused(false);
+  };
+
   return (
     <PanGestureHandler onGestureEvent={handleGesture}>
       <SafeAreaView style={styles.container}>
-        <View style={{}}></View>
+        <Header
+          isPaused={isPaused}
+          pauseGame={pauseGame}
+          reloadGame={reloadGame}
+        >
+          <Text style={styles.scoreStyle}>{score}</Text>
+        </Header>
         <View style={styles.boundaries}>
           <Snake snake={snake} />
           <Food x={food.x} y={food.y} />
+          {isGameOver ? (
+            <View style={styles.gameOverStyle}>
+              <Text style={styles.scoreStyle}>Game Over!</Text>
+            </View>
+          ) : null}
         </View>
       </SafeAreaView>
     </PanGestureHandler>
@@ -116,13 +143,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   boundaries: {
-    flex: 1,
-    width: 390,
-    height: 100,
+    flex: 0.95,
+    width: width,
+    // height: 100,
     backgroundColor: Colors.background,
     borderWidth: 12,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     borderColor: Colors.primary,
+  },
+  scoreStyle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: Colors.primary,
+  },
+  gameOverStyle: {
+    flex: 0.95,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
