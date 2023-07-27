@@ -5,6 +5,7 @@ import { Direction } from "../types/types";
 import Snake from "./Snake";
 import { checkGameOver } from "../utils/checkGameOver";
 import Food from "./Food";
+import { Colors } from "../styles/colors";
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
 const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
@@ -101,7 +102,7 @@ export default Game;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue", //Colors.primary
+    backgroundColor: Colors.primary,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -109,10 +110,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 390,
     height: 100,
-    backgroundColor: "#fff", //Colors.background
+    backgroundColor: Colors.background,
     borderWidth: 12,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    borderColor: "blue", //Colors.primary
+    borderColor: Colors.primary,
   },
 });

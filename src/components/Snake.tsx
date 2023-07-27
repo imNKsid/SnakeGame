@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { Fragment } from "react";
 import { Coordinate } from "../types/types";
+import { Colors } from "../styles/colors";
 
 interface SnakeProps {
   snake: Coordinate[];
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderRadius: 7,
-    backgroundColor: "#000",
+    backgroundColor: Colors.primary,
     position: "absolute",
   },
 });
