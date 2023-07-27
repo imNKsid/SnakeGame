@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { Fragment } from "react";
 import { Coordinate } from "../types/types";
 import { Colors } from "../styles/colors";
