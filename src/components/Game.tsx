@@ -6,6 +6,8 @@ import Snake from "./Snake";
 import { checkGameOver } from "../utils/checkGameOver";
 import Food from "./Food";
 import { Colors } from "../styles/colors";
+import { checkEatsFood } from "../utils/checkEatsFood";
+import { randomFoodPosition } from "../utils/randomFoodPosition";
 
 const SNAKE_INITIAL_POSITION = [{ x: 5, y: 5 }];
 const FOOD_INITIAL_POSITION = { x: 5, y: 20 };
@@ -19,6 +21,7 @@ const Game = () => {
   const [food, setFood] = useState(FOOD_INITIAL_POSITION);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [score, setScore] = useState(0);
 
   const handleGesture = (event: any) => {
     const { translationX, translationY } = event.nativeEvent;
@@ -81,7 +84,13 @@ const Game = () => {
         break;
     }
 
-    setSnake([newHead, ...snake.slice(0, -1)]);
+    if (checkEatsFood(newHead, food, 2)) {
+      setFood(randomFoodPosition(GAME_BOUNDS.xMax, GAME_BOUNDS.yMax)); //set another food's position
+      setSnake([newHead, ...snake]); //making the snake longer
+      setScore(score + SCORE_INCREMENT); //increasing the score
+    } else {
+      setSnake([newHead, ...snake.slice(0, -1)]);
+    }
   };
 
   return (
